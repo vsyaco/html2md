@@ -26,14 +26,35 @@ func StripNoise(doc *goquery.Document) {
 	doc.Find("*").Each(func(_ int, s *goquery.Selection) {
 		class, _ := s.Attr("class")
 		id, _ := s.Attr("id")
-		combined := strings.ToLower(class + " " + id)
-		for _, kw := range noiseClassKeywords {
-			if strings.Contains(combined, kw) {
-				s.Remove()
-				return
-			}
+		if matchesNoiseKeyword(class) || matchesNoiseKeyword(id) {
+			s.Remove()
+			return
 		}
 	})
+}
+
+// matchesNoiseKeyword checks if any class/id token starts with a noise keyword.
+// Splits by whitespace into individual tokens, then checks each token's word parts
+// (split by - and _) to see if the first part matches a noise keyword.
+func matchesNoiseKeyword(attr string) bool {
+	if attr == "" {
+		return false
+	}
+	for _, token := range strings.Fields(strings.ToLower(attr)) {
+		parts := strings.FieldsFunc(token, func(r rune) bool {
+			return r == '-' || r == '_'
+		})
+		if len(parts) == 0 {
+			continue
+		}
+		first := parts[0]
+		for _, kw := range noiseClassKeywords {
+			if first == kw {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 // ExtractArticle uses go-readability to extract the main article content as HTML.
