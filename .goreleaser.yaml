@@ -45,7 +45,7 @@ changelog:
       - "^test:"
       - "^chore:"
 
-brews:
+homebrew_casks:
   - name: html2md
     repository:
       owner: vsyaco
@@ -54,7 +54,3 @@ brews:
     homepage: "https://github.com/vsyaco/html2md"
     description: "Convert HTML pages to Markdown from the command line"
     license: "MIT"
-    install: |
-      bin.install "html2md"
-    test: |
-      system "#{bin}/html2md", "--version"
