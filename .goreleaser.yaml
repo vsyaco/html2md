@@ -51,7 +51,6 @@ homebrew_casks:
       owner: vsyaco
       name: homebrew-tap
       token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
-    skip_upload: true
     homepage: "https://github.com/vsyaco/html2md"
     description: "Convert HTML pages to Markdown from the command line"
     license: "MIT"
